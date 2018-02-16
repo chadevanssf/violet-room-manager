@@ -22,21 +22,19 @@ violet.addTopLevelGoal('cleaned');
 violet.respondTo({
   expecting: ['Rooms to clean', 'List of rooms to clean', 'What are my rooms to clean'],
   resolve: (response) => {
-    if (!response.ensureGoalFilled('targetFloor') ) {
-      return false; // dependent goals not met
+    if (response.ensureGoalFilled('targetFloor') ) {
+      var tFloor = response.get(FLOOR_NAME);
+
+      response.say('Looking on floor ' + tFloor);
+
+      // make sure to return the promise so that the async call resolves
+      return dbUtil.getRoomsToClean(tFloor)
+        .then((rows) => {
+          var reponse = dbUtil.getRoomListResponse(rows);
+          response.say('The list of rooms to clean are ' + reponse);
+        });
     }
-
-    var tFloor = response.get(FLOOR_NAME);
-
-    response.say('Looking on floor ' + tFloor);
-
-    // make sure to return the promise so that the async call resolves
-    return dbUtil.getRoomsToClean(tFloor)
-      .then((rows) => {
-        var reponse = dbUtil.getRoomListResponse(rows);
-        response.say('The list of rooms to clean are ' + reponse);
-      });
-}});
+  }});
 
 violet.respondTo({
   expecting: ['Update room', 'Finish room'],
@@ -53,26 +51,24 @@ violet.respondTo({
 violet.defineGoal({
   goal: 'clean',
   resolve: function (response) {
-    if (!response.ensureGoalFilled('targetRoom')
-        || !response.ensureGoalFilled('targetFloor') ) {
-      return false; // dependent goals not met
+    if (response.ensureGoalFilled('targetRoom')
+        && response.ensureGoalFilled('targetFloor') ) {
+      var tRoom = response.get(ROOM_NAME);
+      var tFloor = response.get(FLOOR_NAME);
+
+      var resp1 = 'I am updating room ' + tRoom + ' on floor ' + tFloor + ' now.';
+      var resp2 = 'I will update room ' + tRoom + ' on floor ' + tFloor + ' right away.';
+
+      response.say([resp1,resp2]);
+
+      return dbUtil.updateCleanRoom(tRoom, tFloor)
+        .then((rows) => {
+          response.say('Succesfully updated room ' + tRoom + ' on floor ' + tFloor + ' to cleaned.');
+
+          response.clear(ROOM_NAME);
+        });
     }
-
-    var tRoom = response.get(ROOM_NAME);
-    var tFloor = response.get(FLOOR_NAME);
-
-    var resp1 = 'I am updating room ' + tRoom + ' on floor ' + tFloor + ' now.';
-    var resp2 = 'I will update room ' + tRoom + ' on floor ' + tFloor + ' right away.';
-
-    response.say([resp1,resp2]);
-
-    return dbUtil.updateCleanRoom(tRoom, tFloor)
-      .then((rows) => {
-        response.say('Succesfully updated room ' + tRoom + ' on floor ' + tFloor + ' to cleaned.');
-
-        response.clear(ROOM_NAME);
-      });
-}});
+  }});
 
 violet.defineGoal({
   goal: 'targetRoom',
