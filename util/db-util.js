@@ -44,6 +44,7 @@ dbUtil.getRoomQuery = function() {
 dbUtil.getRoomToCleanQuery = function() {
   return dbUtil.getBaseRoomQuery()
     .where("status__c = ?", "Needing Cleaning")
+    .where("floor__c = $1")
     .order("floor__c")
     .order("room__c")
     .limit(5)
@@ -91,11 +92,11 @@ dbUtil.updateCleanRoom = function(newRm, newFl) {
   });
 };
 
-dbUtil.getRoomsToClean = function() {
+dbUtil.getRoomsToClean = function(currFl) {
   return new Promise(function(resolve, reject) {
     const queryToRun = {
       text: dbUtil.getRoomToCleanQuery(),
-      values: []
+      values: [currFl]
     };
 
     dbUtil.getPool().query(queryToRun)
@@ -104,6 +105,29 @@ dbUtil.getRoomsToClean = function() {
       })
       .catch( e => console.error(e.stack) );
   });
+};
+
+dbUtil.getRoomListResponse = function(rows) {
+  var response = "";
+  var currentFloor;
+  rows.forEach((row) => {
+    var fl = row.floor__c;
+    var rm = row.room__c;
+    if (currentFloor != fl) {
+      if (!currentFloor) {
+        response += "on floor " + fl + " room " + rm;
+      } else {
+        response += ", on floor " + fl + " room " + rm;
+      }
+      currentFloor = fl;
+    } else {
+      response += ", " + rm;
+    }
+  });
+
+  console.log("getListResponse: " + response);
+
+  return response;
 };
 
 module.exports = dbUtil;

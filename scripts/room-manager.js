@@ -23,43 +23,54 @@ violet.addTopLevelGoal('cleaned');
 violet.respondTo({
   expecting: ['Rooms to clean', 'List of rooms to clean', 'What are my rooms to clean'],
   resolve: (response) => {
-   // make sure to return the promise so that the async call resolves
-   return dbUtil.getRoomsToClean()
-    .then((rows) => {
-      var reponse = roomUtilities.getListResponse(rows);
-      response.say('The list of rooms to clean are ' + reponse);
-    });
+    if (!response.ensureGoalFilled('targetFloor') ) {
+      return false; // dependent goals not met
+    }
+
+    var tFloor = response.get(FLOOR_NAME);
+
+    response.say('Looking on floor ' + tFloor);
+
+    // make sure to return the promise so that the async call resolves
+    return dbUtil.getRoomsToClean(tFloor)
+      .then((rows) => {
+        var reponse = dbUtil.getRoomListResponse(rows);
+        response.say('The list of rooms to clean are ' + reponse);
+      });
 }});
 
 violet.respondTo({
   expecting: ['Update room', 'Finish room'],
   resolve: (response) => {
-    console.log('Starting update response...');
     response.addGoal('clean');
+}});
+
+violet.respondTo({
+  expecting: ['Set my floor', 'Update floor'],
+  resolve: (response) => {
+    response.addGoal('targetFloor');
 }});
 
 violet.defineGoal({
   goal: 'clean',
   resolve: function (response) {
-    console.log('Starting clean goal...');
     if (!response.ensureGoalFilled('targetRoom')
         || !response.ensureGoalFilled('targetFloor') ) {
       return false; // dependent goals not met
     }
 
-    var resp1 = 'I am updating room ' + response.get(ROOM_NAME) + ' on floor ' + response.get(FLOOR_NAME) + ' now.';
-    var resp2 = 'I will update room ' + response.get(ROOM_NAME) + ' on floor ' + response.get(FLOOR_NAME) + ' right away.';
+    var tRoom = response.get(ROOM_NAME);
+    var tFloor = response.get(FLOOR_NAME);
 
-    response.endConversation();
+    var resp1 = 'I am updating room ' + tRoom + ' on floor ' + tFloor + ' now.';
+    var resp2 = 'I will update room ' + tRoom + ' on floor ' + tFloor + ' right away.';
+
     response.say([resp1,resp2]);
 
-    /*response.store('diabetesLog', {
-      'user': response.get('userId'),
-      'timeOfCheckin': response.get('timeOfCheckin'),
-      'bloodSugarLvl': response.get('bloodSugarLvl'),
-      'feetWounds': response.get('feetWounds'),
-      'missedDosages': response.get('missedDosages')
-    });*/
+    return dbUtil.updateCleanRoom(tRoom, tFloor)
+      .then((rows) => {
+        response.say('Succesfully updated room ' + tRoom + ' on floor ' + tFloor + ' to cleaned.');
+      });
 }});
 
 violet.defineGoal({
@@ -68,7 +79,7 @@ violet.defineGoal({
   respondTo: [{
     expecting: ['room [[' + ROOM_NAME + ']]', '[[' + ROOM_NAME + ']]'],
     resolve: (response) => {
-      response.say('Got it, room ' + response.get(ROOM_NAME));
+      //response.say('Got it, room ' + response.get(ROOM_NAME));
       response.set(ROOM_NAME, response.get(ROOM_NAME));
   }}]
 });
@@ -79,7 +90,7 @@ violet.defineGoal({
   respondTo: [{
     expecting: ['floor [[' + FLOOR_NAME + ']]', '[[' + FLOOR_NAME + ']]'],
     resolve: (response) => {
-      response.say('Got it, floor ' + response.get(FLOOR_NAME));
+      //response.say('Got it, floor ' + response.get(FLOOR_NAME));
       response.set(FLOOR_NAME, response.get(FLOOR_NAME));
   }}]
 });
