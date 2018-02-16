@@ -49,13 +49,11 @@ violet.defineGoal({
     response.say(`Looking on floor ${tFloor}`);
 
     // make sure to return the promise so that the async call resolves
-    dbUtil.getRoomsToClean(tFloor)
+    return dbUtil.getRoomsToClean(tFloor)
       .then((rows) => {
         var reponse = dbUtil.getRoomListResponse(rows);
         response.say(`The list of rooms to clean are ${reponse}`);
       });
-
-    return true;
 }});
 
 
@@ -75,13 +73,12 @@ violet.defineGoal({
 
     response.say([resp1,resp2]);
 
-    dbUtil.updateCleanRoom(tRoom, tFloor)
+    return dbUtil.updateCleanRoom(tRoom, tFloor)
       .then((rows) => {
         response.say(`Succesfully updated room ${tRoom} on floor ${tFloor} to cleaned.`);
 
         response.clear(ROOM_NAME);
       });
-    return true;
 }});
 
 violet.defineGoal({
@@ -95,7 +92,6 @@ violet.defineGoal({
         response.say(`Got it, room ${tRoom}}`);
       }
       response.set(ROOM_NAME, tRoom);
-      return true;
   }}]
 });
 
@@ -110,7 +106,6 @@ violet.defineGoal({
         response.say(`Got it, floor ${tFloor}}`);
       }
       response.set(FLOOR_NAME, tFloor);
-      return true;
   }}]
 });
 
