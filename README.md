@@ -47,7 +47,7 @@ Alternatively, you can deploy your own copy of the app using this button:
 
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/chadevanssf/alexa-hospital-room)
 
-Your app should now be running on *https://`<heroku-app-name>`.herokuapp.com*, where `<app-name>` is the heroku app name.
+Your app should now be running on *[https://`<heroku-app-name>`.herokuapp.com](https://`<heroku-app-name>`.herokuapp.com)*, where `<heroku-app-name>` is the heroku app name.
 
 ### Adding Heroku Connect
 
@@ -59,7 +59,7 @@ You can then import the connection configuration at */util/violet-hospital-room.
 
 ### Testing it on Heroku
 
-You can access a test page to verify if the basic setup is working fine: *https://`<app-name>`.herokuapp.com/*.
+You can access a test page to verify if the basic setup is working fine: *[https://`<app-name>`.herokuapp.com/](https://`<app-name>`.herokuapp.com/)*.
 
 ## Deploying to Alexa Skill
 

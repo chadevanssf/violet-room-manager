@@ -69,6 +69,8 @@ violet.defineGoal({
     return dbUtil.updateCleanRoom(tRoom, tFloor)
       .then((rows) => {
         response.say('Succesfully updated room ' + tRoom + ' on floor ' + tFloor + ' to cleaned.');
+
+        response.clear(ROOM_NAME);
       });
 }});
 
