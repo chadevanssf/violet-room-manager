@@ -1,6 +1,6 @@
 'use strict';
 
-const violet = require('violet/lib/violet.js').script();
+const violet = require('../lib/violet_mod/lib/violet.js').script();
 const dbUtil = require("../util/db-util");
 
 // must match the intent slot names

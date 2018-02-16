@@ -1,0 +1,80 @@
+{
+  "_from": "violet@^0.8.0",
+  "_id": "violet@0.8.0",
+  "_inBundle": false,
+  "_integrity": "sha512-0Fh13DxrejwHwszdeRiws8TXrlLubgn/fHLq8Mh1IbFvIguyo1J1aFmEsUK6n7b3WMXCmDsgITGLuOJBck1DYg==",
+  "_location": "/violet",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "violet@^0.8.0",
+    "name": "violet",
+    "escapedName": "violet",
+    "rawSpec": "^0.8.0",
+    "saveSpec": null,
+    "fetchSpec": "^0.8.0"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/violet/-/violet-0.8.0.tgz",
+  "_shasum": "4543e6cc4e7437dc4e97b24b1dfd9c0ad4a5e4b4",
+  "_spec": "violet@^0.8.0",
+  "_where": "/Users/chad.evans/Documents/workspace/Alexa/violet-room-manager",
+  "bugs": {
+    "url": "https://github.com/vineet-sinha/violet-conversations/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "alexa-app": "^4.1.0",
+    "bluebird": "^3.5.0",
+    "bufferutil": "^3.0.0",
+    "cheerio": "^1.0.0-rc.2",
+    "co": "^4.6.0",
+    "ejs": "~2.5.5",
+    "express": "^4.14.0",
+    "ical2json": "^1.2.0",
+    "moment-timezone": "^0.5.13",
+    "nforce": "^1.7.0",
+    "pg": "^7.3.0",
+    "pluralize": "^5.0.0",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.1",
+    "soundex": "^0.2.1",
+    "utf-8-validate": "^3.0.1",
+    "ws": "^2.3.1",
+    "yelp-fusion": "^1.0.3"
+  },
+  "deprecated": false,
+  "description": "Framework for building sophisticated voice apps",
+  "devDependencies": {
+    "codecov": "^3.0.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^4.0.1"
+  },
+  "homepage": "https://github.com/vineet-sinha/violet-conversations#readme",
+  "keywords": [
+    "voice",
+    "conversation",
+    "amazon",
+    "alexa",
+    "echo",
+    "skills"
+  ],
+  "license": "BSD-3-Clause",
+  "main": "lib/violet.js",
+  "name": "violet",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vineet-sinha/violet-conversations.git"
+  },
+  "scripts": {
+    "test": "mocha",
+    "test-ci": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && codecov",
+    "test-cover": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec",
+    "test-cover-report": "istanbul cover ./node_modules/mocha/bin/_mocha",
+    "test-local": "mocha -i -f violetStoreSF"
+  },
+  "version": "0.8.0"
+}
