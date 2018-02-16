@@ -2,7 +2,6 @@
 
 const violet = require('violet/lib/violet.js').script();
 const dbUtil = require("../util/db-util");
-const roomUtilities = require("../util/hospital-room-utilities");
 
 // must match the intent slot names
 const ROOM_NAME = 'targetRoom';
