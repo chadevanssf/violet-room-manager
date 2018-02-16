@@ -22,7 +22,9 @@ violet.addTopLevelGoal('cleaned');
 violet.respondTo({
   expecting: ['Rooms to clean', 'List of rooms to clean', 'What are my rooms to clean'],
   resolve: (response) => {
-    response.addGoal('targetFloor');
+    if (!response.ensureGoalFilled('targetFloor')) {
+      return false; // dependent goals not met
+    }
 
     var tFloor = response.get(FLOOR_NAME);
 
@@ -51,8 +53,8 @@ violet.respondTo({
 violet.defineGoal({
   goal: 'clean',
   resolve: function (response) {
-    if (response.ensureGoalFilled('targetRoom')
-        && response.ensureGoalFilled('targetFloor') ) {
+    if (!response.ensureGoalFilled('targetRoom')
+        || !response.ensureGoalFilled('targetFloor')) {
       return false; // dependent goals not met
     }
 
