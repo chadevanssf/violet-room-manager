@@ -19,12 +19,27 @@ violet.addInputTypes({
 violet.addPhraseEquivalents([
 ]);
 
-violet.addTopLevelGoal('list');
-violet.addTopLevelGoal('cleaned');
-
 violet.respondTo({
   expecting: ['Rooms to clean', 'List of rooms to clean', 'What are my rooms to clean'],
   resolve: (response) => {
+    response.addGoal('list');
+  }});
+
+violet.respondTo({
+  expecting: ['Update room', 'Finish room'],
+  resolve: (response) => {
+    response.addGoal('clean');
+}});
+
+violet.respondTo({
+  expecting: ['Set my floor', 'Update floor'],
+  resolve: (response) => {
+    response.addGoal('targetFloor');
+}});
+
+violet.defineGoal({
+  goal: 'list',
+  resolve: function (response) {
     if (!response.ensureGoalFilled('targetFloor')) {
       return false; // dependent goals not met
     }
@@ -41,19 +56,8 @@ violet.respondTo({
       });
 
     return true;
-  }});
-
-violet.respondTo({
-  expecting: ['Update room', 'Finish room'],
-  resolve: (response) => {
-    response.addGoal('clean');
 }});
 
-violet.respondTo({
-  expecting: ['Set my floor', 'Update floor'],
-  resolve: (response) => {
-    response.addGoal('targetFloor');
-}});
 
 violet.defineGoal({
   goal: 'clean',
