@@ -1,9 +1,12 @@
 'use strict';
 
+// use the environment var from Heroku if set
+const IS_DEBUG = process.env.NODE_ENV != "production";
+
 const violet = require('../lib/violet_mod/lib/violet.js').script();
 const dbUtil = require("../util/db-util");
 
-// must match the intent slot names
+// must match the input types
 const ROOM_NAME = 'targetRoom';
 const FLOOR_NAME = 'targetFloor';
 
@@ -28,14 +31,16 @@ violet.respondTo({
 
     var tFloor = response.get(FLOOR_NAME);
 
-    response.say('Looking on floor ' + tFloor);
+    response.say(`Looking on floor ${tFloor}`);
 
     // make sure to return the promise so that the async call resolves
-    return dbUtil.getRoomsToClean(tFloor)
+    dbUtil.getRoomsToClean(tFloor)
       .then((rows) => {
         var reponse = dbUtil.getRoomListResponse(rows);
-        response.say('The list of rooms to clean are ' + reponse);
+        response.say(`The list of rooms to clean are ${reponse}`);
       });
+
+    return true;
   }});
 
 violet.respondTo({
@@ -61,27 +66,32 @@ violet.defineGoal({
     var tRoom = response.get(ROOM_NAME);
     var tFloor = response.get(FLOOR_NAME);
 
-    var resp1 = 'I am updating room ' + tRoom + ' on floor ' + tFloor + ' now.';
-    var resp2 = 'I will update room ' + tRoom + ' on floor ' + tFloor + ' right away.';
+    var resp1 = `Got it. I am updating room ${tRoom} on floor ${tFloor} now`;
+    var resp1 = `I will update room ${tRoom} on floor ${tFloor} right away`;
 
     response.say([resp1,resp2]);
 
-    return dbUtil.updateCleanRoom(tRoom, tFloor)
+    dbUtil.updateCleanRoom(tRoom, tFloor)
       .then((rows) => {
-        response.say('Succesfully updated room ' + tRoom + ' on floor ' + tFloor + ' to cleaned.');
+        response.say(`Succesfully updated room ${tRoom} on floor ${tFloor} to cleaned.`);
 
         response.clear(ROOM_NAME);
       });
+    return true;
 }});
 
 violet.defineGoal({
   goal: 'targetRoom',
   prompt: 'What room number?',
   respondTo: [{
-    expecting: ['room [[' + ROOM_NAME + ']]', '[[' + ROOM_NAME + ']]'],
+    expecting: [`room [[${ROOM_NAME}]]`, `[[${ROOM_NAME}]]`],
     resolve: (response) => {
-      //response.say('Got it, room ' + response.get(ROOM_NAME));
-      response.set(ROOM_NAME, response.get(ROOM_NAME));
+      var tRoom = response.get(ROOM_NAME);
+      if (IS_DEBUG) {
+        response.say(`Got it, room ${tRoom}}`);
+      }
+      response.set(ROOM_NAME, tRoom);
+      return true;
   }}]
 });
 
@@ -89,10 +99,14 @@ violet.defineGoal({
   goal: 'targetFloor',
   prompt: 'What floor?',
   respondTo: [{
-    expecting: ['floor [[' + FLOOR_NAME + ']]', '[[' + FLOOR_NAME + ']]'],
+    expecting: [`floor [[${FLOOR_NAME}]]`, `[[${FLOOR_NAME}]]`],
     resolve: (response) => {
-      //response.say('Got it, floor ' + response.get(FLOOR_NAME));
-      response.set(FLOOR_NAME, response.get(FLOOR_NAME));
+      var tFloor = response.get(FLOOR_NAME);
+      if (IS_DEBUG) {
+        response.say(`Got it, floor ${tFloor}}`);
+      }
+      response.set(FLOOR_NAME, tFloor);
+      return true;
   }}]
 });
 

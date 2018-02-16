@@ -1,3 +1,8 @@
+'use strict';
+
+// use the environment var from Heroku if set
+const IS_DEBUG = process.env.NODE_ENV != "production";
+
 const pg = require("pg");
 pg.defaults.ssl = true; // doesn't work for many local installations
 const url = require('url');
@@ -125,7 +130,9 @@ dbUtil.getRoomListResponse = function(rows) {
     }
   });
 
-  console.log("getListResponse: " + response);
+  if (IS_DEBUG) {
+    console.log("getListResponse: " + response);
+  }
 
   return response;
 };

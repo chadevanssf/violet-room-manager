@@ -11,5 +11,6 @@ violetSrvr = require('./lib/violet_mod/lib/violetClientTx')(violetSrvr, srvrInst
 
 violetSrvr.loadScript(process.env.SCRIPT_NAME || 'scripts/room-manager.js', 'room-manager');
 
-
-console.log('Waiting for requests...');
+if (IS_DEBUG) {
+    console.log('Waiting for requests...');
+}
