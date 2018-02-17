@@ -1,0 +1,26 @@
+{
+  "name": "violet-room-manager",
+  "description": "Room Manager for Alexa and Salesforce",
+  "keywords": [
+    "heroku",
+    "aelxa",
+    "violet",
+    "salesforce",
+    "violet"
+  ],
+  "repository": "https://github.com/chadevanssf/violet-room-manager",
+  "env": {
+    "NODE_ENV": {
+      "description": "What kind of environment this is, production or development are common values",
+      "value": "development"
+    }
+  },
+  "addons": [
+    {
+      "plan": "heroku-postgresql:hobby-dev"
+    },
+    {
+      "plan": "herokuconnect:demo"
+    }
+  ]
+}
