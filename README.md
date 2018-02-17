@@ -45,7 +45,7 @@ heroku open
 
 Alternatively, you can deploy your own copy of the app using this button:
 
-[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/chadevanssf/violet-hospital-room)
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/chadevanssf/violet-room-manager)
 
 Your app should now be running on *[https://`<heroku-app-name>`.herokuapp.com](https://`<heroku-app-name>`.herokuapp.com)*, where `<heroku-app-name>` is the heroku app name.
 
