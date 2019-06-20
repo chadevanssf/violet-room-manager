@@ -28,9 +28,10 @@
   "homepage": "https://github.com/chadevanssf/violet-room-manager#readme",
   "dependencies": {
     "pg": "^7.4.1",
-    "request": "^2.81.0",
+    "request": "^2.88.0",
     "request-promise": "^4.2.1",
     "squel": "^5.12.0",
+    "stringstream": "0.0.6",
     "url": "^0.11.0",
     "violet": "^0.8.0"
   },
