@@ -36,7 +36,7 @@
     "violet": "^0.8.0"
   },
   "devDependencies": {
-    "codecov": "^3.0.0",
+    "codecov": "^3.6.5",
     "istanbul": "^0.4.5",
     "mocha": "^4.0.1"
   },
